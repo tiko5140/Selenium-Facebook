@@ -1,0 +1,71 @@
+package FacebookDay1;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.ITest;
+import org.testng.annotations.Test;
+import org.testng.asserts.Assertion;
+
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+
+import static java.lang.System.*;
+import static org.openqa.selenium.Keys.ENTER;
+
+public class Day1 {
+   @Test
+    public void FacebookMessegeCheck() throws InterruptedException {
+
+
+           setProperty("webdriver.chrome.driver", "C:\\Users\\tigra\\IdeaProjects\\SeleniumProject\\chromedriver.exe");
+           ChromeOptions options = new ChromeOptions();
+           // Maximize and Mute
+           options.addArguments("start-maximized");
+           options.addArguments("--disable-notifications");
+           ChromeDriver driver = new ChromeDriver(options);
+           //Facebook login
+           String email = "tigran@goodwe.com.tr";
+           String password = "Www720581.";
+           driver.get("https://www.facebook.com/");
+           driver.manage().window().maximize();
+           WebElement usernamefield = driver.findElement(By.id("email"));
+           WebElement passwordfield = driver.findElement(By.id("pass"));
+           WebElement login = driver.findElement(By.name("login"));
+           usernamefield.sendKeys(email);
+           passwordfield.sendKeys(password);
+           login.click();
+       /* Messenger */
+        String id="100000992928136";
+        driver.get("https://www.facebook.com/messages");
+        Thread.sleep(2000);
+        driver.get("https://www.facebook.com/messages/t/"+id);
+        Thread.sleep(5000);
+        //Send message
+        WebElement textBox = driver.findElement(By.xpath("//div[@class='_1mf _1mj']"));
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String text = dateFormat.format(date);
+        textBox.sendKeys(text);
+        textBox.sendKeys(ENTER);
+        Thread.sleep(20000);
+        // Check delivered
+        WebElement delivered= driver.findElement(By.xpath("//div[@role='gridcell']//div[1]//div[3]//div[1]//span[1]//div[1]//*[name()='svg']"));
+      /*
+        boolean displayed = delivered.isDisplayed();
+       Assert.assertEquals(displayed,1);
+       */
+       driver.quit();
+    }
+}
